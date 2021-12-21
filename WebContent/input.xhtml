@@ -12,7 +12,9 @@
 	<div class="container flex flex-col items-center justify-center h-screen">
 		<p>Hello</p>
 		<h:outputLabel value="#{testBean.foo}" />
-		<h:commandButton value="Test" action="#{testBean.runMe}" styleClass="border-2 border-black  text-black block rounded-sm font-bold py-4 px-6 mr-2 flex items-center" />
+		<h:form>
+			<h:commandButton value="Test" action="#{physicalFitnessBean.bodyPerformanceTest}" styleClass="border-2 border-black  text-black block rounded-sm font-bold py-4 px-6 mr-2 flex items-center" />
+		</h:form>
 	</div>
 	
 </h:body>

@@ -1,0 +1,184 @@
+package com.PhysicalDiagnosis;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+
+import weka.classifiers.Classifier;
+import weka.classifiers.Evaluation;
+import weka.classifiers.evaluation.NominalPrediction;
+import weka.classifiers.trees.J48;
+import weka.core.FastVector;
+import weka.core.Instances;
+import weka.core.converters.ArffLoader.ArffReader;
+
+@ManagedBean @SessionScoped
+public class PhysicalFitnessBean {
+	private double height, weight, bodyFat, gripForce, sitBendForward;
+	private int diastolic, systolic, sitUps, boardJump;
+
+	private String modelfile = "C:\\Users\\Izqalan\\eclipse-workspace\\PhysicalDiagnosis\\datasets\\bodyPerformance.model";
+	private String trainFile = "C:\\Users\\Izqalan\\eclipse-workspace\\PhysicalDiagnosis\\datasets\\bodyPerformance.arff";
+
+	public double getHeight() {
+		return height;
+	}
+	public void setHeight(double height) {
+		this.height = height;
+	}
+	public double getWeight() {
+		return weight;
+	}
+	public void setWeight(double weight) {
+		this.weight = weight;
+	}
+	public double getBodyFat() {
+		return bodyFat;
+	}
+	public void setBodyFat(double bodyFat) {
+		this.bodyFat = bodyFat;
+	}
+	public double getGripForce() {
+		return gripForce;
+	}
+	public void setGripForce(double gripForce) {
+		this.gripForce = gripForce;
+	}
+	public double getSitBendForward() {
+		return sitBendForward;
+	}
+	public void setSitBendForward(double sitBendForward) {
+		this.sitBendForward = sitBendForward;
+	}
+	public int getDiastolic() {
+		return diastolic;
+	}
+	public void setDiastolic(int diastolic) {
+		this.diastolic = diastolic;
+	}
+	public int getSystolic() {
+		return systolic;
+	}
+	public void setSystolic(int systolic) {
+		this.systolic = systolic;
+	}
+	public int getSitUps() {
+		return sitUps;
+	}
+	public void setSitUps(int sitUps) {
+		this.sitUps = sitUps;
+	}
+	public int getBoardJump() {
+		return boardJump;
+	}
+	public void setBoardJump(int boardJump) {
+		this.boardJump = boardJump;
+	}
+
+	static BufferedReader readDataFile(String filename) {
+		BufferedReader inputReader = null;
+		try {
+			inputReader = new BufferedReader(new FileReader(filename));
+		} catch (FileNotFoundException ex) {
+			System.err.println("File not found: " + filename);
+		}
+		return inputReader;
+	}
+	
+	public static Evaluation classify(Classifier model, Instances trainingSet, Instances testingSet) throws Exception {
+		//To evaluate the training dataset
+		Evaluation evaluation = new Evaluation(trainingSet);
+		//To create model of the classifiers using training dataset
+		model.buildClassifier(trainingSet);
+		//To evaluate the created model on the testing dataset
+		evaluation.evaluateModel(model, testingSet);
+
+		return evaluation;
+	}
+	
+	public static double calculateAccuracy(FastVector predictions) {
+		double correct = 0;
+		//To calculate correct accuracy by comparing the predicted and actual values 
+		for (int i = 0; i < predictions.size(); i++) {
+			NominalPrediction np = (NominalPrediction) predictions.elementAt(i);
+			if (np.predicted() == np.actual()) {
+				correct++;
+			}
+		}
+ 
+		return 100 * correct / predictions.size();
+	}
+	
+	public static Instances[][] crossValidationSplit(Instances data, int numberOfFolds) {
+		Instances[][] split = new Instances[2][numberOfFolds];
+ //To create data sampling for training and testing using split cross-validation based on specific number of fold 
+		for (int i = 0; i < numberOfFolds; i++) {
+			split[0][i] = data.trainCV(numberOfFolds, i);
+			split[1][i] = data.testCV(numberOfFolds, i);
+		}
+ 
+		return split;
+	}
+	
+	public void bodyPerformanceTest() {
+		Instances data;
+		BufferedReader datafile = readDataFile(trainFile);
+		try {
+			ArffReader arff = new ArffReader(datafile);
+			data = arff.getData();
+			
+			data.setClassIndex(data.numAttributes() - 1);
+			 
+			// Do 10-split cross validation
+			Instances[][] split = crossValidationSplit(data, 5);
+	 
+			// Separate split into training and testing arrays
+			Instances[] trainingSplits = split[0];
+			Instances[] testingSplits = split[1];
+	 
+			// Use a set of classifiers
+			Classifier[] models = { 
+					new J48(), // a decision tree
+			};
+	 
+			// Run for each model
+			for (int j = 0; j < models.length; j++) {
+	 
+				// Collect every group of predictions for current model in a FastVector
+				FastVector predictions = new FastVector();
+	 
+				// For each training-testing split pair, train and test the classifier
+				for (int i = 0; i < trainingSplits.length; i++) {
+					Evaluation validation;
+					try {
+						validation = classify(models[j], trainingSplits[i], testingSplits[i]);
+						predictions.appendElements(validation.predictions());
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	
+					// Uncomment to see the summary for each training-testing pair.
+					System.out.println(models[j].toString());
+				}
+	 
+				// Calculate overall accuracy of current classifier on all splits
+				double accuracy = calculateAccuracy(predictions);
+	 
+				// Print current classifier's name and accuracy in a complicated,
+				// but nice-looking way.
+				System.out.println("Accuracy of " + models[j].getClass().getSimpleName() + ": "
+						+ String.format("%.2f%%", accuracy)
+						+ "\n---------------------------------");
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+}
