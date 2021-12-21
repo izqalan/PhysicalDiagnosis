@@ -180,5 +180,11 @@ public class PhysicalFitnessBean {
 			e.printStackTrace();
 		}
 	}
+	
+	public void predict() {
+		// get input
+		// create an instance from input given
+		// predict instance using trained model
+	}
 
 }
