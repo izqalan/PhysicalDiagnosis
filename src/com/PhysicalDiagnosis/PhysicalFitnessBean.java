@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -12,17 +14,36 @@ import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
 import weka.classifiers.evaluation.NominalPrediction;
 import weka.classifiers.trees.J48;
+import weka.core.Attribute;
+import weka.core.DenseInstance;
 import weka.core.FastVector;
 import weka.core.Instances;
+import weka.core.SerializationHelper;
 import weka.core.converters.ArffLoader.ArffReader;
 
 @ManagedBean @SessionScoped
 public class PhysicalFitnessBean {
-	private double height, weight, bodyFat, gripForce, sitBendForward;
-	private int diastolic, systolic, sitUps, boardJump;
 
 	private String modelfile = "C:\\Users\\Izqalan\\eclipse-workspace\\PhysicalDiagnosis\\datasets\\bodyPerformance.model";
 	private String trainFile = "C:\\Users\\Izqalan\\eclipse-workspace\\PhysicalDiagnosis\\datasets\\bodyPerformance.arff";
+
+
+	private double height, weight, bodyFat, gripForce, sitBendForward;
+	private int diastolic, systolic, sitUps, boardJump, age;
+	private char gender;
+
+	public char getGender() {
+		return gender;
+	}
+	public void setGender(char gender) {
+		this.gender = gender;
+	}
+	public int getAge() {
+		return age;
+	}
+	public void setAge(int age) {
+		this.age = age;
+	}
 
 	public double getHeight() {
 		return height;
@@ -181,10 +202,87 @@ public class PhysicalFitnessBean {
 		}
 	}
 	
-	public void predict() {
+	public String predict() {
 		// get input
+		final Attribute attributeAge = new Attribute("age");
+		final Attribute attributeGender = new Attribute("gender");
+		final Attribute attributeHeight = new Attribute("height_cm");
+		final Attribute attributeWeight = new Attribute("weight_kg");
+		final Attribute attributeBodyFat = new Attribute("body fat_%");
+		final Attribute attributeDiastolic = new Attribute("diastolic");
+		final Attribute attributeSystolic = new Attribute("systolic");
+		final Attribute attributeGripForce = new Attribute("gripForce");
+		final Attribute attributeSitAndBend = new Attribute("sit and bend forward_cm");
+		final Attribute attributeSitUps = new Attribute("sit-ups counts");
+		final Attribute attributeBoardJump = new Attribute("board jump_cm");
+		final List<String> classes = new ArrayList<String>(){
+			{
+				add("C");
+				add("A");
+				add("B");
+				add("D");
+			}
+		};
+		
 		// create an instance from input given
+		ArrayList<Attribute> attributeList = new ArrayList<Attribute>() {
+			{
+				add(attributeAge);
+				add(attributeGender);
+				add(attributeHeight);
+				add(attributeWeight);
+				add(attributeBodyFat);
+				add(attributeDiastolic);
+				add(attributeSystolic);
+				add(attributeGripForce);
+				add(attributeSitAndBend);
+				add(attributeSitUps);
+				add(attributeBoardJump);
+				Attribute attributeClass = new Attribute("@@class@@", classes);
+				add(attributeClass);
+			}
+		};
+		
+		// create new dataset to predict
+		Instances dataUnpredicted = new Instances("TestInstances", attributeList, 1);
+        dataUnpredicted.setClassIndex(dataUnpredicted.numAttributes() - 1); 
+        
+		DenseInstance newInstanceBodyPerformance = new DenseInstance(dataUnpredicted.numAttributes()) {
+			{
+				setValue(attributeAge, getAge());
+				setValue(attributeGender, getGender());
+				setValue(attributeHeight, getHeight());
+				setValue(attributeWeight, getWeight());
+				setValue(attributeBodyFat, getBodyFat());
+				setValue(attributeDiastolic, getDiastolic());
+				setValue(attributeSystolic, getSystolic());
+				setValue(attributeGripForce, getGripForce());
+				setValue(attributeSitAndBend, getSitBendForward());
+				setValue(attributeSitUps, getSitUps());
+				setValue(attributeBoardJump, getBoardJump());
+			}
+		};
+		
 		// predict instance using trained model
+		DenseInstance newInstance = newInstanceBodyPerformance;
+		newInstance.setDataset(dataUnpredicted);
+		
+		Classifier classifier = null;
+		try {
+			classifier = (Classifier) SerializationHelper.read(modelfile);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if (classifier == null) return "";
+		
+		// predict input data
+		try {
+			double result = classifier.classifyInstance(newInstance);
+			System.out.println("Index of predicted class label: " + result + ", which corresponds to class: " + classes.get(new Double(result).intValue()));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "output";
 	}
 
 }

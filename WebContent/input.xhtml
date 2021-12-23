@@ -1,22 +1,37 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html">
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
 <h:head>
 	<meta charset="utf-8" name="viewport"
 		content="width=device-width, initial-scale=1"
 		http-equiv="X-UA-Conpatible" />
 	<h:outputStylesheet library="css" name="bootstrap.min.css" />
-	
+
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
 	<title>Predict</title>
 </h:head>
 <h:body>
-	<div
-		class="container">
-		<p>Hello</p>
-		<h:outputLabel value="#{testBean.foo}" />
+	<div class="container">
 		<h:form id="studentForm" styleClass="form-horizontal">
+			<div class="form-group">
+				<h:outputLabel value="Age" styleClass="control-label col-md-2" />
+				<div class="col-sm-10">
+					<h:inputText value="#{physicalFitnessBean.age}"
+						styleClass="form-control" />
+				</div>
+			</div>
+			<div class="form-group">
+				<h:outputLabel value="Gender" styleClass="control-label col-md-2" />
+				<div class="col-sm-10">
+					<h:selectOneMenu value="#{physicalFitnessBean.gender}"
+						styleClass="form-control">
+						<f:selectItem itemValue="M" itemLabel="Male" />
+						<f:selectItem itemValue="F" itemLabel="Female" />
+					</h:selectOneMenu>
+				</div>
+			</div>
 			<div class="form-group">
 				<h:outputLabel value="Height (cm)"
 					styleClass="control-label col-md-2" />
@@ -57,7 +72,7 @@
 						styleClass="form-control" />
 				</div>
 			</div>
-			
+
 			<div class="form-group">
 				<h:outputLabel value="Diastolic Blood Pressure"
 					styleClass="control-label col-md-2" />
@@ -95,6 +110,13 @@
 			<div class="col-sm-10">
 				<h:commandButton value="Test"
 					action="#{physicalFitnessBean.bodyPerformanceTest}"
+					styleClass="btn btn-primary" />
+			</div>
+		</h:form>
+		<h:form>
+			<div class="col-sm-10">
+				<h:commandButton value="Predict"
+					action="#{physicalFitnessBean.predict}"
 					styleClass="btn btn-primary" />
 			</div>
 		</h:form>
