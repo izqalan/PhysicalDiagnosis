@@ -24,8 +24,9 @@ import weka.core.converters.ArffLoader.ArffReader;
 @ManagedBean @SessionScoped
 public class PhysicalFitnessBean {
 
-	private String modelfile = "C:\\Users\\Izqalan\\eclipse-workspace\\PhysicalDiagnosis\\datasets\\bodyPerformance.model";
-	private String trainFile = "C:\\Users\\Izqalan\\eclipse-workspace\\PhysicalDiagnosis\\datasets\\bodyPerformance.arff";
+	Environment env = new Environment();
+	private String modelfile = env.getModelPath();
+	private String trainFile = env.getTrainPath();
 
 
 	private double height, weight, bodyFat, gripForce, sitBendForward;
