@@ -7,7 +7,7 @@ public class Environment {
 	
 
 	public Environment() {
-		this.modelPath = "C:\\Users\\Izqalan\\eclipse-workspace\\PhysicalDiagnosis\\datasets\\bodyPerformance.model";
+		this.modelPath = "C:\\Users\\Izqalan\\eclipse-workspace\\PhysicalDiagnosis\\datasets\\modelMP.model";
 		this.trainPath = "C:\\Users\\Izqalan\\eclipse-workspace\\PhysicalDiagnosis\\datasets\\bodyPerformance.arff";
 	}
 
@@ -25,8 +25,6 @@ public class Environment {
 
 	public void setTrainPath(String trainPath) {
 		this.trainPath = trainPath;
-	}
-	
-	
+	}	
 
 }
