@@ -218,9 +218,9 @@ public class PhysicalFitnessBean {
 		final Attribute attributeBoardJump = new Attribute("board jump_cm");
 		final List<String> classes = new ArrayList<String>(){
 			{
-				add("C");
 				add("A");
 				add("B");
+				add("C");
 				add("D");
 			}
 		};
@@ -278,6 +278,7 @@ public class PhysicalFitnessBean {
 		
 		// predict input data
 		try {
+			
 			double result = classifier.classifyInstance(newInstance);
 			System.out.println("Index of predicted class label: " + result + ", which corresponds to class: " + classes.get(new Double(result).intValue()));
 		} catch (Exception e) {

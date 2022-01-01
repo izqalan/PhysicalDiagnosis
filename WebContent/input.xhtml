@@ -14,7 +14,7 @@
 </h:head>
 <h:body>
 	<div class="container">
-		<h:form id="studentForm" styleClass="form-horizontal">
+		<h:form id="form" styleClass="form-horizontal">
 			<div class="form-group">
 				<h:outputLabel value="Age" styleClass="control-label col-md-2" />
 				<div class="col-sm-10">
@@ -105,15 +105,6 @@
 						styleClass="form-control" />
 				</div>
 			</div>
-		</h:form>
-		<h:form>
-			<div class="col-sm-10">
-				<h:commandButton value="Test"
-					action="#{physicalFitnessBean.bodyPerformanceTest}"
-					styleClass="btn btn-primary" />
-			</div>
-		</h:form>
-		<h:form>
 			<div class="col-sm-10">
 				<h:commandButton value="Predict"
 					action="#{physicalFitnessBean.predict}"
