@@ -7,7 +7,7 @@ public class Environment {
 	
 
 	public Environment() {
-		this.modelPath = "C:\\Users\\Izqalan\\eclipse-workspace\\PhysicalDiagnosis\\datasets\\modelMP.model";
+		this.modelPath = "C:\\Users\\Izqalan\\eclipse-workspace\\PhysicalDiagnosis\\datasets\\J48Model.model";
 		this.trainPath = "C:\\Users\\Izqalan\\eclipse-workspace\\PhysicalDiagnosis\\datasets\\bodyPerformance.arff";
 	}
 

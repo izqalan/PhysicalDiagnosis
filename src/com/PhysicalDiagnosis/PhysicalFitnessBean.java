@@ -32,7 +32,14 @@ public class PhysicalFitnessBean {
 	private double height, weight, bodyFat, gripForce, sitBendForward;
 	private int diastolic, systolic, sitUps, boardJump, age;
 	private char gender;
+	private String prediction;
 
+	public String getPrediction() {
+		return prediction;
+	}
+	public void setPrediction(String prediction) {
+		this.prediction = prediction;
+	}
 	public char getGender() {
 		return gender;
 	}
@@ -245,7 +252,7 @@ public class PhysicalFitnessBean {
 		};
 		
 		// create new dataset to predict
-		Instances dataUnpredicted = new Instances("TestInstances", attributeList, 1);
+		Instances dataUnpredicted = new Instances("newInstance", attributeList, 1);
         dataUnpredicted.setClassIndex(dataUnpredicted.numAttributes() - 1); 
         
 		DenseInstance newInstanceBodyPerformance = new DenseInstance(dataUnpredicted.numAttributes()) {
@@ -278,8 +285,9 @@ public class PhysicalFitnessBean {
 		
 		// predict input data
 		try {
-			
 			double result = classifier.classifyInstance(newInstance);
+			System.out.println(newInstance);
+			this.setPrediction(classes.get(new Double(result).intValue()));
 			System.out.println("Index of predicted class label: " + result + ", which corresponds to class: " + classes.get(new Double(result).intValue()));
 		} catch (Exception e) {
 			e.printStackTrace();
