@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:h="http://java.sun.com/jsf/html">
+	
+<h:head>
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1" http-equiv="X-UA-Conpatible" />
+    <h:outputStylesheet library="css" name="bootstrap.min.css" />
+    <title>Prediction Result</title>
+    <style type="text/css">
+        .col-xs-updated {        
+            width: 92% !important;
+        }
+    </style>
+</h:head>
+<body>
+	<div>
+		<p>Prediction is: </p>
+		<h:outputLabel value="#{physicalFitnessBean.prediction}" />
+	</div>
+</body>
+</html>
