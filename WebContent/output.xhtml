@@ -15,7 +15,9 @@
 <body>
 	<div>
 		<p>Prediction is: </p>
-		<h:outputLabel value="#{physicalFitnessBean.prediction}" />
+		<h:outputLabel value="#{physicalFitnessBean.predictionResult.prediction}" />
+		<h:outputLabel value="#{physicalFitnessBean.predictionResult.description}" />
+		
 	</div>
 </body>
 </html>

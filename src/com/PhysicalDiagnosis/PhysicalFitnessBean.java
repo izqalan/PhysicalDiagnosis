@@ -33,7 +33,15 @@ public class PhysicalFitnessBean {
 	private int diastolic, systolic, sitUps, boardJump, age;
 	private char gender;
 	private String prediction;
+	private PredictionResult predictionResult;
+	
 
+	public PredictionResult getPredictionResult() {
+		return predictionResult;
+	}
+	public void setPredictionResult(PredictionResult predictionResult) {
+		this.predictionResult = predictionResult;
+	}
 	public String getPrediction() {
 		return prediction;
 	}
@@ -288,6 +296,7 @@ public class PhysicalFitnessBean {
 			double result = classifier.classifyInstance(newInstance);
 			System.out.println(newInstance);
 			this.setPrediction(classes.get(new Double(result).intValue()));
+			predictionResult = new PredictionResult(classes.get(new Double(result).intValue()));
 			System.out.println("Index of predicted class label: " + result + ", which corresponds to class: " + classes.get(new Double(result).intValue()));
 		} catch (Exception e) {
 			e.printStackTrace();
