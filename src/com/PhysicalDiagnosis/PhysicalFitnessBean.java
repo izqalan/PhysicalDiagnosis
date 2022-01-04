@@ -24,14 +24,30 @@ import weka.core.converters.ArffLoader.ArffReader;
 @ManagedBean @SessionScoped
 public class PhysicalFitnessBean {
 
-	private String modelfile = "C:\\Users\\Izqalan\\eclipse-workspace\\PhysicalDiagnosis\\datasets\\bodyPerformance.model";
-	private String trainFile = "C:\\Users\\Izqalan\\eclipse-workspace\\PhysicalDiagnosis\\datasets\\bodyPerformance.arff";
+	Environment env = new Environment();
+	private String modelfile = env.getModelPath();
+	private String trainFile = env.getTrainPath();
 
 
 	private double height, weight, bodyFat, gripForce, sitBendForward;
 	private int diastolic, systolic, sitUps, boardJump, age;
 	private char gender;
+	private String prediction;
+	private PredictionResult predictionResult;
+	
 
+	public PredictionResult getPredictionResult() {
+		return predictionResult;
+	}
+	public void setPredictionResult(PredictionResult predictionResult) {
+		this.predictionResult = predictionResult;
+	}
+	public String getPrediction() {
+		return prediction;
+	}
+	public void setPrediction(String prediction) {
+		this.prediction = prediction;
+	}
 	public char getGender() {
 		return gender;
 	}
@@ -217,9 +233,9 @@ public class PhysicalFitnessBean {
 		final Attribute attributeBoardJump = new Attribute("board jump_cm");
 		final List<String> classes = new ArrayList<String>(){
 			{
-				add("C");
 				add("A");
 				add("B");
+				add("C");
 				add("D");
 			}
 		};
@@ -244,7 +260,7 @@ public class PhysicalFitnessBean {
 		};
 		
 		// create new dataset to predict
-		Instances dataUnpredicted = new Instances("TestInstances", attributeList, 1);
+		Instances dataUnpredicted = new Instances("newInstance", attributeList, 1);
         dataUnpredicted.setClassIndex(dataUnpredicted.numAttributes() - 1); 
         
 		DenseInstance newInstanceBodyPerformance = new DenseInstance(dataUnpredicted.numAttributes()) {
@@ -278,6 +294,9 @@ public class PhysicalFitnessBean {
 		// predict input data
 		try {
 			double result = classifier.classifyInstance(newInstance);
+			System.out.println(newInstance);
+			this.setPrediction(classes.get(new Double(result).intValue()));
+			predictionResult = new PredictionResult(classes.get(new Double(result).intValue()));
 			System.out.println("Index of predicted class label: " + result + ", which corresponds to class: " + classes.get(new Double(result).intValue()));
 		} catch (Exception e) {
 			e.printStackTrace();
