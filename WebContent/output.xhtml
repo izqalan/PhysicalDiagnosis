@@ -3,21 +3,35 @@
 	xmlns:h="http://java.sun.com/jsf/html">
 	
 <h:head>
-    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1" http-equiv="X-UA-Conpatible" />
-    <h:outputStylesheet library="css" name="bootstrap.min.css" />
     <title>Prediction Result</title>
-    <style type="text/css">
-        .col-xs-updated {        
-            width: 92% !important;
-        }
-    </style>
+    <meta charset="utf-8"/>
+    <meta name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <link rel="icon" href="favicon.ico"/>
+    <link rel="stylesheet"
+      href=" https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css "/>
+    <link rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"/>
 </h:head>
 <body>
-	<div>
-		<p>Prediction is: </p>
-		<h:outputLabel value="#{physicalFitnessBean.predictionResult.prediction}" />
-		<h:outputLabel value="#{physicalFitnessBean.predictionResult.description}" />
-		
+	<div class="container">
+      <section class="pt-5 pb-5">
+      <div class="container">
+      	<p>We predict that you are:</p>
+        <div class="row align-items-center">
+          <div class="col-7">
+            <h:outputLabel styleClass="mb-2 display-5 fw-bold" value="#{physicalFitnessBean.predictionResult.prediction}" />
+            <h:outputLabel styleClass="mb-2 display-5 fw-semibold" value="#{physicalFitnessBean.predictionResult.description}" />
+          </div>
+          <div class="col-5">
+            <img src="#{physicalFitnessBean.predictionResult.imageUrl}" alt="image"
+              class="img-fluid mx-auto d-block" />
+          </div>
+        </div>
+      </div>
+    </section>
 	</div>
 </body>
 </html>
