@@ -263,10 +263,19 @@ public class PhysicalFitnessBean {
 		Instances dataUnpredicted = new Instances("newInstance", attributeList, 1);
         dataUnpredicted.setClassIndex(dataUnpredicted.numAttributes() - 1); 
         
+        int genderCode = 0;
+        if (getGender() == 77) {
+        	genderCode = 1;
+        } else if(getGender() == 70) {
+        	genderCode = 2;
+        }
+        System.out.println(genderCode);
+        final int genderInt = genderCode;
+        
 		DenseInstance newInstanceBodyPerformance = new DenseInstance(dataUnpredicted.numAttributes()) {
 			{
 				setValue(attributeAge, getAge());
-				setValue(attributeGender, getGender());
+				setValue(attributeGender, genderInt);
 				setValue(attributeHeight, getHeight());
 				setValue(attributeWeight, getWeight());
 				setValue(attributeBodyFat, getBodyFat());
