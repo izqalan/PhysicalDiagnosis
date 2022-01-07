@@ -11,7 +11,7 @@
 @attribute 'sit and bend forward_cm' numeric
 @attribute 'sit-ups counts' numeric
 @attribute 'broad jump_cm' numeric
-@attribute class {C,A,B,D}
+@attribute class {A,B,C,D}
 
 @data
 27,M,172.3,75.24,21.3,80,130,54.9,18.4,60,217,C
