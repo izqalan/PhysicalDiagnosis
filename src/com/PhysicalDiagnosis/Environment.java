@@ -1,14 +1,24 @@
 package com.PhysicalDiagnosis;
 
-public class Environment {
+import javax.faces.context.FacesContext;
+import javax.servlet.*;
+import javax.servlet.http.HttpServlet;
+
+public class Environment extends HttpServlet {
 	
 	private String modelPath, trainPath;
 	
 	
 
 	public Environment() {
-		this.modelPath = "C:\\Users\\Izqalan\\eclipse-workspace\\PhysicalDiagnosis\\datasets\\J48Model.model";
-		this.trainPath = "C:\\Users\\Izqalan\\eclipse-workspace\\PhysicalDiagnosis\\datasets\\bodyPerformance.arff";
+		String modelRelativeWebPath = "/datasets/NomToBinaryModel.model";
+		String trainRelativeWebPath = "/datasets/bodyPerformance.arff";
+		
+		ServletContext servletContext = (ServletContext) FacesContext
+			    .getCurrentInstance().getExternalContext().getContext();
+
+		this.modelPath = servletContext.getRealPath(modelRelativeWebPath);
+		this.trainPath = servletContext.getRealPath(trainRelativeWebPath);
 	}
 
 	public String getModelPath() {
