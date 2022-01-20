@@ -221,7 +221,6 @@ public class PhysicalFitnessBean {
 	public String predict() {
 		// get input
 		final Attribute attributeAge = new Attribute("age");
-		final Attribute attributeGenderM = new Attribute("gender=M");
 		final Attribute attributeGenderF = new Attribute("gender=F");
 		final Attribute attributeHeight = new Attribute("height_cm");
 		final Attribute attributeWeight = new Attribute("weight_kg");
@@ -245,7 +244,6 @@ public class PhysicalFitnessBean {
 		ArrayList<Attribute> attributeList = new ArrayList<Attribute>() {
 			{
 				add(attributeAge);
-				add(attributeGenderM);
 				add(attributeGenderF);
 				add(attributeHeight);
 				add(attributeWeight);
@@ -265,22 +263,19 @@ public class PhysicalFitnessBean {
 		Instances dataUnpredicted = new Instances("newInstance", attributeList, 1);
         dataUnpredicted.setClassIndex(dataUnpredicted.numAttributes() - 1); 
         
-        int genderCodeM = 0;
         int genderCodeF = 0;
         if (getGender() == 77) {
-        	genderCodeM = 1;
+        	genderCodeF = 0;
         } else if(getGender() == 70) {
         	genderCodeF = 1;
         }
         
-        final int femaleBinary = genderCodeF;
-        final int maleBinary = genderCodeM;
+        final int isFemale = genderCodeF;
         
 		DenseInstance newInstanceBodyPerformance = new DenseInstance(dataUnpredicted.numAttributes()) {
 			{
 				setValue(attributeAge, getAge());
-				setValue(attributeGenderM, maleBinary);
-				setValue(attributeGenderF, femaleBinary);
+				setValue(attributeGenderF, isFemale);
 				setValue(attributeHeight, getHeight());
 				setValue(attributeWeight, getWeight());
 				setValue(attributeBodyFat, getBodyFat());
