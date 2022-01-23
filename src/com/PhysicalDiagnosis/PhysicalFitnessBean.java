@@ -33,8 +33,17 @@ public class PhysicalFitnessBean {
 	private int diastolic, systolic, sitUps, boardJump, age;
 	private char gender;
 	private String prediction;
+	private ArrayList<Suggestions> suggestion = new ArrayList<Suggestions>(); 
+	
 	private PredictionResult predictionResult;
 	
+	public ArrayList<Suggestions> getSuggestion() {
+		return suggestion;
+	}
+	public void setSuggestion(ArrayList<Suggestions> suggestion) {
+		this.suggestion = suggestion;
+	}
+
 
 	public PredictionResult getPredictionResult() {
 		return predictionResult;

@@ -1,37 +1,63 @@
 <!DOCTYPE HTML>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" 
-	xmlns:h="http://java.sun.com/jsf/html">
-	
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
 <h:head>
-    <title>Prediction Result</title>
-    <meta charset="utf-8"/>
-    <meta name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <meta name="description" content=""/>
-    <meta name="author" content=""/>
-    <link rel="icon" href="favicon.ico"/>
-    <link rel="stylesheet"
-      href=" https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css "/>
-    <link rel="stylesheet"
-      href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"/>
+	<title>Prediction Result</title>
+	<meta charset="utf-8" />
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<meta name="description" content="" />
+	<meta name="author" content="" />
+	<link rel="icon" href="favicon.ico" />
+	<link rel="stylesheet"
+		href=" https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css " />
+	<link rel="stylesheet"
+		href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" />
+
 </h:head>
 <body>
 	<div class="container">
-      <section class="pt-5 pb-5">
-      <div class="container">
-      	<p>We predict that you are:</p>
-        <div class="row align-items-center">
-          <div class="col-7">
-            <h:outputLabel styleClass="mb-2 display-5 fw-bold" value="#{physicalFitnessBean.predictionResult.prediction}" />
-            <h:outputLabel styleClass="mb-2 display-5 fw-semibold" value="#{physicalFitnessBean.predictionResult.description}" />
-          </div>
-          <div class="col-5">
-            <img src="#{physicalFitnessBean.predictionResult.imageUrl}" alt="image"
-              class="img-fluid mx-auto d-block" />
-          </div>
-        </div>
-      </div>
-    </section>
+		<section class="pt-5 pb-5">
+			<div class="container">
+				<p>We predict that you are:</p>
+				<div class="row align-items-center">
+					<div class="col-7">
+						<h:outputLabel styleClass="mb-2 display-5 fw-bold"
+							value="#{physicalFitnessBean.predictionResult.prediction}" />
+						<h:outputLabel styleClass="mb-2 display-5 fw-semibold"
+							value="#{physicalFitnessBean.predictionResult.description}" />
+					</div>
+					<div class="col-5">
+						<img src="#{physicalFitnessBean.predictionResult.imageUrl}"
+							alt="image" class="img-fluid mx-auto d-block" />
+					</div>
+				</div>
+			</div>
+		</section>
+		<p class="mb-2 semibold">What we suggests:</p>
+		<div class="row">
+			<div class="col-8">
+				<div class="list-group">
+					<ui:repeat var="item"
+						value="#{physicalFitnessBean.predictionResult.suggestion}">
+						<div
+							class="list-group-item list-group-item-action flex-column align-items-start">
+							<div class="d-flex w-100 justify-content-between">
+								<h5 class="mb-1">#{item.title}</h5>
+							</div>
+							<p class="mb-1">#{item.description}</p>
+							<small>
+							Source: 
+							<a href="#{item.source}">#{item.source}</a>
+							</small>
+						</div>
+					</ui:repeat>
+				</div>
+
+			</div>
+		</div>
 	</div>
 </body>
 </html>
